@@ -1,4 +1,5 @@
 <?php
+// src/Entity/Members.php
 
 namespace App\Entity;
 
@@ -11,7 +12,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: MembersRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]  // Add a unique constraint for username
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class Members implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -22,13 +24,13 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 180, unique: true)]  // Ensure username is unique
-    private ?string $username = null;  // Add the username field
+    #[ORM\Column(length: 180, unique: true)]
+    private ?string $username = null;
 
     /**
      * @var list<string> The user roles
      */
-    #[ORM\Column]
+    #[ORM\Column(type: 'json')]
     private array $roles = [];
 
     /**
@@ -50,11 +52,9 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
-    // Add getter and setter for username
     public function getUsername(): ?string
     {
         return $this->username;
@@ -63,48 +63,32 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): static
     {
         $this->username = $username;
-
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;  // Use username instead of email as the identifier
+        return (string) $this->username;
     }
 
-    /**
-     * @see UserInterface
-     *
-     * @return list<string>
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
-
+        // Ensure we don't store duplicate ROLE_USER
+        $this->roles = array_unique($roles);
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -112,16 +96,25 @@ class Members implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // If you store any temporary, sensitive data, clear it here
     }
+
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->getRoles(), true);
+    }
+
+    public function upgradeToAdmin(): void
+    {
+        if (!$this->hasRole('ROLE_ADMIN')) {
+            $this->roles[] = 'ROLE_ADMIN';
+            $this->roles = array_unique($this->roles);
+        }
+    }
+
 }
