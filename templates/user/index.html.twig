@@ -18,10 +18,16 @@
 				{{ role|replace({'ROLE_': ''}) }}
 			{% endfor %}
 		</div>
-		<a href=" {{ path('upgrade_to_admin') }}">Vip</a>
-
-
+		<a href=" {{ path('upgrade_to_admin') }}">Vip</a><br>
 	{% endif %}
+	<a href=" {{ path('app_nouveaux_messages') }}">Créer de nouveaux messages</a>
+
+	{% for Article in Articles %}
+		<h1>Titre<h2>
+				{{ Article.title }}
+				<h3>Content</h3>
+				{{ Article.Contente }}
+			{% endfor %}
 
 
-{% endblock %}
+		{% endblock %}

@@ -19,8 +19,19 @@
 			{% endfor %}
 		</div>
 
+		{% for article in articles %}
+			<h1>Titre<h2>
+					{{ article.title }}
+					<h3>Content</h3>
+					{{ article.Contente }}
 
-	{% endif %}
+					<a href="{{ path('Delete_message',{'id':article.id} ) }}">Supprimer</a>
 
 
-{% endblock %}
+				{% endfor %}
+
+
+			{% endif %}
+
+
+		{% endblock %}

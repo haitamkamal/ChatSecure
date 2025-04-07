@@ -18,7 +18,7 @@ class LogInController extends AbstractController
             if ($this->getUser()) {
                     // Always get FRESH user data from database
                     $freshUser = $em->getRepository(Members::class)->find($this->getUser()->getId());
-                    
+        
                     // Debugging - check what roles are actually loaded
                     dump($freshUser->getRoles());
                     

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello NouveauxMessagesController!
+{% endblock %}
+
+{% block body %}
+
+	<a href="{{ path('app_user') }}"></a>
+
+	<h1>Créer de nouveaux messages</h1>
+	{{ form_start(form) }}
+
+	{{ form_row(form.title) }}
+
+	{{ form_row(form.Contente) }}
+
+	{{ form_row(form.add_new_message) }}
+
+
+	{{ form_end(form) }}
+{% endblock %}
