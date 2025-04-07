@@ -4,10 +4,22 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Bonjour</h1>
+	<div>
+		<h1 class="bg-blend-color-dodge">Bonjour</h1>
+
+		<h3>Ce site propose une authentification utilisateur avec des fonctionnalités de connexion et d'inscription sécurisées,
+							permettant aux utilisateurs de créer et de gérer des messages 
+							personnalisés sur un forum de discussion.
+		</h3>
+
+
+	</div>
+
 
 	<a href="{{ path('app_register') }}">S'inscrire</a>
 	<a href="{{ path('app_login') }}">se connecter</a>
+
+	<img src="{{ asset('images/image apr 7, 2025, 11_33_35 am.png') }}" alt="authentication creation articles image" width="500" height="600">
 
 
 {% endblock %}
