@@ -12,12 +12,7 @@
 			{{ app.user.userIdentifier }},
 			<a href="{{ path('app_logout') }}">Logout</a>
 		</div>
-		<div>
-			Roles:
-			{% for role in app.user.roles %}
-				{{ role|replace({'ROLE_': ''}) }}
-			{% endfor %}
-		</div>
+		<p>Roles:Admin</p>
 
 		{% for article in articles %}
 			<h1>Titre<h2>
