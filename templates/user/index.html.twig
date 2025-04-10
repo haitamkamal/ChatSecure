@@ -4,25 +4,93 @@
 {% endblock %}
 
 {% block body %}
-
-
 	{% if app.user %}
-		<div class="mb-3">
+		<div class="user-info">
 			You are logged in as
-			{{ app.user.userIdentifier }},
-			<a href="{{ path('app_logout') }}">Logout</a>
+			<strong>{{ app.user.userIdentifier }}</strong>,
+			<a href="{{ path('app_logout') }}" class="logout-link">Logout</a>
 		</div>
-		<p>Roles:User</p>
-		<a href=" {{ path('upgrade_to_admin') }}">Vip</a><br>
+
+		<p class="user-role">Roles: User</p>
+		<a href="{{ path('upgrade_to_admin') }}" class="vip-link">Vip</a><br>
 	{% endif %}
-	<a href=" {{ path('app_nouveaux_messages') }}">Créer de nouveaux messages</a>
+
+	<a href="{{ path('app_nouveaux_messages') }}" class="new-message-link">Créer de nouveaux messages</a>
 
 	{% for Article in Articles %}
-		<h1>Titre<h2>
-				{{ Article.title }}
-				<h3>Content</h3>
+		<div class="article">
+			<h3 class="article-title">Titre</h3>
+			<p>{{ Article.title }}</p>
+			<h3 class="article-content-title">Content</h3>
+			<div class="article-content">
 				{{ Article.Contente }}
-			{% endfor %}
+			</div>
+		</div>
+	{% endfor %}
 
+	<style>
+		.user-info {
+			margin-bottom: 1rem;
+			font-size: 1rem;
+			color: #333;
+		}
 
-		{% endblock %}
+		.logout-link {
+			color: #d32f2f;
+			text-decoration: none;
+		}
+
+		.logout-link:hover {
+			text-decoration: underline;
+		}
+
+		.user-role {
+			font-weight: bold;
+			margin-bottom: 1rem;
+		}
+
+		.vip-link {
+			display: inline-block;
+			margin-bottom: 1rem;
+			color: #ff9800;
+			text-decoration: none;
+			font-weight: bold;
+		}
+
+		.vip-link:hover {
+			text-decoration: underline;
+		}
+
+		.new-message-link {
+			display: inline-block;
+			margin: 1rem 0;
+			padding: 0.5rem 1rem;
+			background-color: #4caf50;
+			color: white;
+			text-decoration: none;
+			border-radius: 4px;
+		}
+
+		.new-message-link:hover {
+			background-color: #388e3c;
+		}
+
+		.article {
+			margin: 2rem 0;
+			padding: 1rem;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+		}
+
+		.article-title,
+		.article-content-title {
+			color: #333;
+			margin: 0.5rem 0;
+		}
+
+		.article-content {
+			line-height: 1.6;
+			color: #555;
+		}
+	</style>
+{% endblock %}
